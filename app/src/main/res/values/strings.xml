@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">PopularMovies</string>
+    <string name="overview_text">over view</string>
+    <string name="overview_title">title</string>
+    <string name="title_text">text</string>
+    <string name="rating_text">rating</string>
+    <string name="release_date_title">date</string>
+    <string name="user_rating_title">rating</string>
+    <string name="movie_poster_image">movie poster</string>
+    <string name="original_title_title">orginali title</string>
+</resources>
