@@ -9,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -35,8 +37,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Fore
     private static String urls = "http://api.themoviedb.org/3/movie/popular";
     private static String urlr = "http://api.themoviedb.org/3/movie/top_rated";
     final static String PARAM_QUERY = "api_key";
-    final static String apikey="c1c8f938c3efb5571b57ce45cd02db31";
+    final static String apikey = "c1c8f938c3efb5571b57ce45cd02db31";
     CategorizeMovie[] CategorizeMovies;
+    int go = 1;
 
 
     @Override
@@ -51,71 +54,101 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Fore
 
         mMoviesList.setHasFixedSize(true);
 
-        mAdapter=new MovieAdapter(this);
+        mAdapter = new MovieAdapter(this);
 
         mMoviesList.setAdapter(mAdapter);
+        goToPop();
     }
-    public URL uriBuilder(String uri)
-    {
-        Uri builtUri=Uri.parse(uri).buildUpon()
-                .appendQueryParameter(PARAM_QUERY,apikey)
-                .build();
-        URL url=null;
-        try
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int menuItemThatWasSelected=item.getItemId();
+        if (menuItemThatWasSelected==R.id.action_sort_rating)
         {
-            url=new URL(builtUri.toString());
+            go =0;
+            MovieAdapter.setData(null);
+            goToRate();
+            return true;
         }
-        catch (Exception e)
+        if (menuItemThatWasSelected==R.id.action_sort_popularity)
         {
+            MovieAdapter.setData(null);
+            go =1;
+            goToPop();
+            return true;
+        }
+        return true;
+    }
+
+    public void goToPop() {
+        mMoviesList.setAdapter(null);
+        CategorizeMovies = null;
+        MovieAdapter.setData(null);
+        URL query = uriBuilder(urls);
+        new queryTask().execute(query);
+    }
+
+    public void goToRate() {
+        mMoviesList.setAdapter(null);
+        CategorizeMovies = null;
+        MovieAdapter.setData(null);
+        URL query = uriBuilder(urlr);
+        new queryTask().execute(query);
+    }
+
+    public URL uriBuilder(String uri) {
+        Uri builtUri = Uri.parse(uri).buildUpon()
+                .appendQueryParameter(PARAM_QUERY, apikey)
+                .build();
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return url;
     }
 
     @Override
-    public void onClick(CategorizeMovie CategorizeMovieed,int idm) {
-        Intent startChildActivityIntent=new Intent(MainActivity.this,DetailActivity.class);
+    public void onClick(CategorizeMovie CategorizeMovieed, int idm) {
+        Intent startChildActivityIntent = new Intent(MainActivity.this, DetailActivity.class);
         Bundle extras = new Bundle();
-        extras.putString("ide",CategorizeMovieed.ip);
+        extras.putString("ide", CategorizeMovieed.ip);
         startChildActivityIntent.putExtras(extras);
         startActivity(startChildActivityIntent);
     }
-    private class queryTask extends AsyncTask<URL,Void,String>
-    {
+
+    private class queryTask extends AsyncTask<URL, Void, String> {
         @Override
-        protected String doInBackground(URL... params)
-        {
-            URL searchURL=params[0];
-            String searchResults=null;
-            try
-            {
-                searchResults=getResponseFromHttpUrl(searchURL);
-                if(searchResults!=null)
-                {
-                    try
-                    {
-                        JSONObject jsonObj=new JSONObject(searchResults);
-                        JSONArray contacts=jsonObj.getJSONArray("results");
-                        CategorizeMovies=new CategorizeMovie[contacts.length()];
-                        for (int i=0;i<=contacts.length();i++)
-                        {
-                            JSONObject c=contacts.getJSONObject(i);
+        protected String doInBackground(URL... params) {
+            URL searchURL = params[0];
+            String searchResults = null;
+            try {
+                searchResults = getResponseFromHttpUrl(searchURL);
+                if (searchResults != null) {
+                    try {
+                        JSONObject jsonObj = new JSONObject(searchResults);
+                        JSONArray contacts = jsonObj.getJSONArray("results");
+                        CategorizeMovies = new CategorizeMovie[contacts.length()];
+                        for (int i = 0; i <= contacts.length(); i++) {
+                            JSONObject c = contacts.getJSONObject(i);
                             String id = c.getString("id");
                             String title = c.getString("title");
                             String vote_count = c.getString("vote_count");
                             String overview = c.getString("overview");
-                            String poster_path=c.getString("poster_path");
-                            CategorizeMovies[i]=new CategorizeMovie(title,vote_count,overview,poster_path,id);
+                            String poster_path = c.getString("poster_path");
+                            CategorizeMovies[i] = new CategorizeMovie(title, vote_count, overview, poster_path, id);
                         }
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return searchResults;
@@ -123,10 +156,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Fore
 
         @Override
         protected void onPostExecute(String s) {
-            Log.d("Abhishek","Chinmaya");
-            if(s!=null &&!s.equals(""))
-            {
-                StaggeredGridLayoutManager layoutManager=new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+            Log.d("Abhishek", "Chinmaya");
+            if (s != null && !s.equals("")) {
+                StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
                 mMoviesList.setLayoutManager(layoutManager);
                 mMoviesList.setHasFixedSize(true);
                 mLoadingIndicator.setVisibility(View.INVISIBLE);
@@ -136,18 +168,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Fore
         }
 
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             mLoadingIndicator.setVisibility(View.VISIBLE);
         }
     }
 
 
+    public static String getResponseFromHttpUrl(URL url) throws IOException {
 
-    public static String getResponseFromHttpUrl(URL url) throws IOException
-    {
-
-        HttpURLConnection urlConnection=(HttpURLConnection)url.openConnection();
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
         try {
             InputStream in = urlConnection.getInputStream();
@@ -161,9 +190,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Fore
 
                 return null;
             }
-        }
-        finally
-        {
+        } finally {
             urlConnection.disconnect();
         }
     }

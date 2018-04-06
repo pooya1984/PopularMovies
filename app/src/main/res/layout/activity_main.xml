@@ -7,14 +7,13 @@
     android:background="@drawable/img"
     tools:alpha="0.9">
 
-    <android.support.v7.wiget.RecycleListView
+    <android.support.v7.wiget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="101dp"
-        tools:layout_editor_absoluteY="16dp">
-    </android.support.v7.wiget.RecycleListView>
+        tools:layout_editor_absoluteY="16dp"/>
 
     <ProgressBar
         android:id="@+id/progress_bar"

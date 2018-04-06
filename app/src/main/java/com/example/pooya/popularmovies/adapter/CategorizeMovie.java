@@ -10,12 +10,12 @@ public class CategorizeMovie {
     String overview;
     String poster_path;
     public String ip;
-    public CategorizeMovie(String n,String m,String g,String p,String i)
-    {
-        title=n;
-        vote_count=m;
-        overview=g;
-        poster_path=p;
-        ip=i;
+
+    public CategorizeMovie(String n, String m, String g, String p, String i) {
+        title = n;
+        vote_count = m;
+        overview = g;
+        poster_path = p;
+        ip = i;
     }
 }

@@ -29,8 +29,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     static CategorizeMovie[] movieArray;
     ImageView imageView;
 
-    public MovieAdapter(ForecastAdapterOnClickHandler clickHandler )
-    {
+    public MovieAdapter(ForecastAdapterOnClickHandler clickHandler) {
         mClickHandler = clickHandler;
 
     }
@@ -62,10 +61,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public int getItemCount() {
-        if (movieArray.length > -1)
-            return movieArray.length;
-        else
-            return 0;
+        if (movieArray != null) return movieArray.length;
+        else return 0;
     }
 
     public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
