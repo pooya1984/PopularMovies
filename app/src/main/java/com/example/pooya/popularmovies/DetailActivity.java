@@ -27,9 +27,10 @@ public class DetailActivity extends AppCompatActivity {
 
     private static String urls = "http://api.themoviedb.org/3/movie/popular";
     private static String urlr = "http://api.themoviedb.org/3/movie/top_rated";
-
+    /** Put own api key from themoviedb.org to gradle.properties in the following form
+     API_KEY = "api key goes here" */
     final static String PARAM_QUERY = "api_key";
-    final static String apikey = "c1c8f938c3efb5571b57ce45cd02db31";
+    final static String apikey = "";
     String id;
     int help;
     ImageView imageView;

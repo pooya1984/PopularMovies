@@ -34,10 +34,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Fore
     private MovieAdapter mAdapter;
     private RecyclerView mMoviesList;
     private ProgressBar mLoadingIndicator;
+    /** Put own api key from themoviedb.org to gradle.properties in the following form
+     API_KEY = "api key goes here" */
     private static String urls = "http://api.themoviedb.org/3/movie/popular";
     private static String urlr = "http://api.themoviedb.org/3/movie/top_rated";
     final static String PARAM_QUERY = "api_key";
-    final static String apikey = "c1c8f938c3efb5571b57ce45cd02db31";
+    final static String apikey = "";
     CategorizeMovie[] CategorizeMovies;
     int go = 1;
 
@@ -48,14 +50,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Fore
         setContentView(R.layout.activity_main);
         mMoviesList = findViewById(R.id.recycler_view);
         mLoadingIndicator = findViewById(R.id.progress_bar);
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mMoviesList.setLayoutManager(layoutManager);
-
         mMoviesList.setHasFixedSize(true);
-
         mAdapter = new MovieAdapter(this);
-
         mMoviesList.setAdapter(mAdapter);
         goToPop();
     }
@@ -70,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Fore
         int menuItemThatWasSelected=item.getItemId();
         if (menuItemThatWasSelected==R.id.action_sort_rating)
         {
-            go =0;
+            go=0;
             MovieAdapter.setData(null);
             goToRate();
             return true;
@@ -78,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Fore
         if (menuItemThatWasSelected==R.id.action_sort_popularity)
         {
             MovieAdapter.setData(null);
-            go =1;
+            go=1;
             goToPop();
             return true;
         }

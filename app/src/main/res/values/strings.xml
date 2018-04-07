@@ -7,6 +7,6 @@
     <string name="release_date_title">date</string>
     <string name="user_rating_title">rating</string>
     <string name="movie_poster_image">movie poster</string>
-    <string name="original_title_title">orginali title</string>
+    <string name="original_title_title">originally title</string>
     <string name="complete">10</string>
 </resources>
